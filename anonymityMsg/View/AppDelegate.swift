@@ -7,20 +7,30 @@
 //
 
 import UIKit
-
+import URLNavigator
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        let navigator = Navigator()
+        URLNavigationMap.initialize(navigator: navigator)
+        
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = .white
-        let launchVc = LaunchViewController()
-        let navVC = UINavigationController.init(rootViewController: launchVc)
+        
+        let navVC = UINavigationController.init(rootViewController: NextViewController(navigator: navigator))
         window?.rootViewController = navVC
         window?.makeKeyAndVisible()
         return true
     }
 }
 
+struct URLNavigationMap {
+    static func initialize(navigator: NavigatorType) {
+        navigator.register("anMsg://launch") { url, values, context in
+            return LaunchViewController()
+        }
+    }
+}

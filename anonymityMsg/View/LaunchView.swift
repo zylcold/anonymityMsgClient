@@ -87,7 +87,9 @@ class LaunchView: UIView, UITextFieldDelegate {
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.delegate?.textFieldShouldReturn(textField.text)
+        let input = textField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        textField.text = input
+        self.delegate?.textFieldShouldReturn(input)
         textField.resignFirstResponder()
         return true
     }

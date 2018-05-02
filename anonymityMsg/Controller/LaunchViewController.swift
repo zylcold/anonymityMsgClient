@@ -9,6 +9,7 @@
 import UIKit
 import FlexLayout
 import PromiseKit
+import KeychainAccess
 class LaunchViewController: UIViewController, AnimationViewDelegate {
     
     var mainView: LaunchView {
@@ -37,7 +38,9 @@ class LaunchViewController: UIViewController, AnimationViewDelegate {
         self.mainView.showActivityIndicatorView()
         postAddNewUser(name: name).done(on: DispatchQueue.main) { (res) in
             if res.status == 200 {
-                self.navigationController?.pushViewController(NextViewController(), animated: true)
+                let keychain = Keychain(service: "com.Zhu.anonymityMsg")
+                keychain["uid"] = res.uid
+                self.dismiss(animated: true, completion: nil)
             }else {
                 print(res.message)
             }
