@@ -21,7 +21,18 @@ class LaunchViewController: UIViewController, AnimationViewDelegate {
         self.mainView.showActivityIndicatorView()
         fetchConfig().done(on: DispatchQueue.main) { (model) in
             self.mainView.hideActivityIndicatorView()
-            self.mainView.buildNewUserUI()
+            
+            if let userName = Keychain(service: "com.Zhu.anonymityMsg")["name"] {
+                self.mainView.buildUserUI(name: userName)
+                self.mainView.showActivityIndicatorView()
+                after(seconds: 4).done {
+                    self.mainView.hideActivityIndicatorView()
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }else {
+                self.mainView.buildNewUserUI()
+            }
+            
             }.catch { (error) in
                 print(error)
             }.finally {
@@ -40,6 +51,7 @@ class LaunchViewController: UIViewController, AnimationViewDelegate {
             if res.status == 200 {
                 let keychain = Keychain(service: "com.Zhu.anonymityMsg")
                 keychain["uid"] = res.uid
+                keychain["name"] = name
                 self.dismiss(animated: true, completion: nil)
             }else {
                 print(res.message)
