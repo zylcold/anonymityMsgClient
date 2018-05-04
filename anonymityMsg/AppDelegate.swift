@@ -8,6 +8,7 @@
 
 import UIKit
 import URLNavigator
+import KeychainAccess
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -23,6 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navVC = UINavigationController.init(rootViewController: NextViewController(navigator: navigator))
         window?.rootViewController = navVC
         window?.makeKeyAndVisible()
+        
+
         return true
     }
 }
@@ -31,6 +34,13 @@ struct URLNavigationMap {
     static func initialize(navigator: NavigatorType) {
         navigator.register("anMsg://launch") { url, values, context in
             return LaunchViewController()
+        }
+        navigator.register("anMsg://sendMsg/<uid>") { (url, values, context) -> UIViewController? in
+            if let uid = values["uid"] as? String {
+                return SendMsgViewController(uid: uid)
+            }else {
+                return nil
+            }
         }
     }
 }

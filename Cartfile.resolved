@@ -1,4 +1,5 @@
 github "Alamofire/Alamofire" "4.7.2"
+github "LowKostKustomz/StatusAlert" "0.10.1"
 github "PromiseKit/Alamofire-" "3.2.1"
 github "devxoul/URLNavigator" "2.0.5"
 github "kishikawakatsumi/KeychainAccess" "v3.1.1"

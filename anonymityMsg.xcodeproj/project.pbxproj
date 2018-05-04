@@ -22,6 +22,9 @@
 		AEA7BBAE209A18CD006C6F79 /* KeychainAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEA7BBAB209A18CD006C6F79 /* KeychainAccess.framework */; };
 		EF8054182099D4460017D2DC /* NetworkUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8054172099D4460017D2DC /* NetworkUtils.swift */; };
 		EF80541A2099D4950017D2DC /* NextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8054192099D4950017D2DC /* NextViewController.swift */; };
+		EFD3C4BF209C2FD10014D5BA /* SendMsgViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD3C4BE209C2FD10014D5BA /* SendMsgViewController.swift */; };
+		EFD3C4C1209C56F00014D5BA /* StatusAlert.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFD3C4C0209C56F00014D5BA /* StatusAlert.framework */; };
+		EFD3C4C3209C6CF80014D5BA /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD3C4C2209C6CF80014D5BA /* MessageCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +45,9 @@
 		AEA7BBAB209A18CD006C6F79 /* KeychainAccess.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainAccess.framework; path = Carthage/Build/iOS/KeychainAccess.framework; sourceTree = "<group>"; };
 		EF8054172099D4460017D2DC /* NetworkUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkUtils.swift; sourceTree = "<group>"; };
 		EF8054192099D4950017D2DC /* NextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextViewController.swift; sourceTree = "<group>"; };
+		EFD3C4BE209C2FD10014D5BA /* SendMsgViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMsgViewController.swift; sourceTree = "<group>"; };
+		EFD3C4C0209C56F00014D5BA /* StatusAlert.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StatusAlert.framework; path = Carthage/Build/iOS/StatusAlert.framework; sourceTree = "<group>"; };
+		EFD3C4C2209C6CF80014D5BA /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EFD3C4C1209C56F00014D5BA /* StatusAlert.framework in Frameworks */,
 				AEA7BBAC209A18CD006C6F79 /* URLMatcher.framework in Frameworks */,
 				AEA7BBAD209A18CD006C6F79 /* URLNavigator.framework in Frameworks */,
 				AEA7BBAE209A18CD006C6F79 /* KeychainAccess.framework in Frameworks */,
@@ -86,6 +93,7 @@
 				AEA7BBB0209A1DD1006C6F79 /* Utils */,
 				AEA7BBAF209A1DBB006C6F79 /* Controller */,
 				AEA7BB8D2098BB7E006C6F79 /* Assets.xcassets */,
+				AEA7BB862098BB7B006C6F79 /* AppDelegate.swift */,
 				AEA7BB8F2098BB7E006C6F79 /* LaunchScreen.storyboard */,
 				AEA7BB922098BB7E006C6F79 /* Info.plist */,
 			);
@@ -95,6 +103,7 @@
 		AEA7BB9A2098C8DC006C6F79 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EFD3C4C0209C56F00014D5BA /* StatusAlert.framework */,
 				AEA7BBAB209A18CD006C6F79 /* KeychainAccess.framework */,
 				AEA7BBA9209A18CC006C6F79 /* URLMatcher.framework */,
 				AEA7BBAA209A18CC006C6F79 /* URLNavigator.framework */,
@@ -111,6 +120,7 @@
 			children = (
 				AEA7BB982098BC2F006C6F79 /* LaunchViewController.swift */,
 				EF8054192099D4950017D2DC /* NextViewController.swift */,
+				EFD3C4BE209C2FD10014D5BA /* SendMsgViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -127,8 +137,8 @@
 		AEA7BBB1209A1DDF006C6F79 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				AEA7BB862098BB7B006C6F79 /* AppDelegate.swift */,
 				AEA7BB9E2098CDC5006C6F79 /* LaunchView.swift */,
+				EFD3C4C2209C6CF80014D5BA /* MessageCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -213,6 +223,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/KeychainAccess.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/URLNavigator.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/URLMatcher.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/StatusAlert.framework",
 			);
 			outputPaths = (
 			);
@@ -228,6 +239,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				EF80541A2099D4950017D2DC /* NextViewController.swift in Sources */,
+				EFD3C4C3209C6CF80014D5BA /* MessageCell.swift in Sources */,
+				EFD3C4BF209C2FD10014D5BA /* SendMsgViewController.swift in Sources */,
 				AEA7BBA8209A10D5006C6F79 /* ModelUtils.swift in Sources */,
 				EF8054182099D4460017D2DC /* NetworkUtils.swift in Sources */,
 				AEA7BB872098BB7B006C6F79 /* AppDelegate.swift in Sources */,

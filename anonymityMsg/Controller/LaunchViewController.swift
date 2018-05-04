@@ -19,24 +19,33 @@ class LaunchViewController: UIViewController, AnimationViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.mainView.showActivityIndicatorView()
-        fetchConfig().done(on: DispatchQueue.main) { (model) in
-            self.mainView.hideActivityIndicatorView()
-            
-            if let userName = Keychain(service: "com.Zhu.anonymityMsg")["name"] {
-                self.mainView.buildUserUI(name: userName)
-                self.mainView.showActivityIndicatorView()
-                after(seconds: 4).done {
+        after(seconds: 1).done {
+            fetchConfig().done(on: DispatchQueue.main) { (model) in
+                
+                if let uid = Keychain(service: "com.Zhu.anonymityMsg")["uid"] {
+                    fetchUserInfo(uid: uid).done({ (user) in
+                        self.mainView.hideActivityIndicatorView()
+                        if user.status == 200 {
+                            self.mainView.buildUserUI(name: user.name)
+                            after(seconds: 1).done {
+                                self.dismiss(animated: true, completion: nil)
+                            }
+                        }else {
+                            self.mainView.buildNewUserUI()
+                        }
+                    }).catch({ (error) in
+                        print(error)
+                    })
+                }else {
                     self.mainView.hideActivityIndicatorView()
-                    self.dismiss(animated: true, completion: nil)
+                    self.mainView.buildNewUserUI()
                 }
-            }else {
-                self.mainView.buildNewUserUI()
+                
+                }.catch { (error) in
+                    print(error)
+                }.finally {
+                    self.mainView.hideActivityIndicatorView()
             }
-            
-            }.catch { (error) in
-                print(error)
-            }.finally {
-                self.mainView.hideActivityIndicatorView()
         }
         
     }
@@ -51,10 +60,9 @@ class LaunchViewController: UIViewController, AnimationViewDelegate {
             if res.status == 200 {
                 let keychain = Keychain(service: "com.Zhu.anonymityMsg")
                 keychain["uid"] = res.uid
-                keychain["name"] = name
                 self.dismiss(animated: true, completion: nil)
             }else {
-                print(res.message)
+                print(res.message!)
             }
             }.catch { (error) in
                 print(error)

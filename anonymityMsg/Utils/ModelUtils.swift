@@ -12,4 +12,12 @@ struct MessageModel: Decodable {
     var images: String?
     var video: String?
     var audio: String?
+    var name: String?
+}
+
+struct PageInfoModel: Decodable {
+    var totalCount: Int
+    var currentPage: Int
+    var pageNum: Int
+    var totalPage: Int
 }
