@@ -13,6 +13,7 @@ import PromiseKit
 class NextViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private let navigator: NavigatorType
     private var datas = [MessageModel]()
+    private var currentPage = 0
     init(navigator: NavigatorType) {
         self.navigator = navigator
         super.init(nibName: nil, bundle: nil)
@@ -67,7 +68,7 @@ class NextViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @objc
     func didChangerRefreshControl(control: UIRefreshControl) {
         if(control.isRefreshing) {
-            fetchMessages(page: 0).done { (res) in
+            fetchMessages(page: currentPage).done { (res) in
                 if res.status == 200 {
                     self.datas.removeAll()
                     self.datas.append(contentsOf: res.messages)
@@ -86,22 +87,23 @@ class NextViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     @objc
-    func didChangerFooterRefreshControl(control: UIRefreshControl) {
+    func didChangerFooterRefreshControl(control: YLRefreshFooterControl) {
         if(control.isRefreshing) {
-            fetchMessages(page: 0).done { (res) in
+            self.currentPage += 1
+            fetchMessages(page: self.currentPage).done { (res) in
                 if res.status == 200 {
-                    self.datas.removeAll()
+                    if res.messages.count < 20 {
+                        control.isHidden = true
+                    }
                     self.datas.append(contentsOf: res.messages)
                     self.tableView.reloadData()
                 }else {
                     print(res.message!)
                 }
-                }.catch { (error) in
+            }.catch { (error) in
                     
-                }.finally {
-                    after(seconds: 1).done {
-                        control.endRefreshing()
-                    }
+            }.finally {
+                control.endRefreshing()
             }
         }
     }
