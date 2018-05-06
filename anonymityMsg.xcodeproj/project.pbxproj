@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE0F0EFF209DFB9E00DA0D81 /* YLRefreshFooterControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0F0EFE209DFB9E00DA0D81 /* YLRefreshFooterControl.swift */; };
 		AEA7BB872098BB7B006C6F79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA7BB862098BB7B006C6F79 /* AppDelegate.swift */; };
 		AEA7BB8E2098BB7E006C6F79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AEA7BB8D2098BB7E006C6F79 /* Assets.xcassets */; };
 		AEA7BB912098BB7E006C6F79 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AEA7BB8F2098BB7E006C6F79 /* LaunchScreen.storyboard */; };
@@ -28,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AE0F0EFE209DFB9E00DA0D81 /* YLRefreshFooterControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YLRefreshFooterControl.swift; sourceTree = "<group>"; };
 		AEA7BB832098BB7B006C6F79 /* anonymityMsg.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = anonymityMsg.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEA7BB862098BB7B006C6F79 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AEA7BB8D2098BB7E006C6F79 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 			children = (
 				AEA7BB9E2098CDC5006C6F79 /* LaunchView.swift */,
 				EFD3C4C2209C6CF80014D5BA /* MessageCell.swift */,
+				AE0F0EFE209DFB9E00DA0D81 /* YLRefreshFooterControl.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -242,6 +245,7 @@
 				EFD3C4C3209C6CF80014D5BA /* MessageCell.swift in Sources */,
 				EFD3C4BF209C2FD10014D5BA /* SendMsgViewController.swift in Sources */,
 				AEA7BBA8209A10D5006C6F79 /* ModelUtils.swift in Sources */,
+				AE0F0EFF209DFB9E00DA0D81 /* YLRefreshFooterControl.swift in Sources */,
 				EF8054182099D4460017D2DC /* NetworkUtils.swift in Sources */,
 				AEA7BB872098BB7B006C6F79 /* AppDelegate.swift in Sources */,
 				AEA7BB9F2098CDC5006C6F79 /* LaunchView.swift in Sources */,

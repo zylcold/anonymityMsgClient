@@ -9,6 +9,7 @@
 import UIKit
 import KeychainAccess
 import URLNavigator
+import PromiseKit
 class NextViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private let navigator: NavigatorType
     private var datas = [MessageModel]()
@@ -47,11 +48,61 @@ class NextViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 
         }
         
+        let refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "下拉刷新")
+        refreshControl.addTarget(self, action: #selector(didChangerRefreshControl), for: .valueChanged)
+        tableView.refreshControl = refreshControl
+        
+        let refreshFooterControl = YLRefreshFooterControl()
+        refreshFooterControl.addTarget(self, action: #selector(didChangerFooterRefreshControl) , for: .valueChanged)
+        tableView.refreshFooterControl = refreshFooterControl
     }
     @objc
     func didTapRightItem() {
         if let uid = Keychain(service: "com.Zhu.anonymityMsg")["uid"] {
             navigator.present("anMsg://sendMsg/\(uid)", wrap: UINavigationController.self)
+        }
+    }
+    
+    @objc
+    func didChangerRefreshControl(control: UIRefreshControl) {
+        if(control.isRefreshing) {
+            fetchMessages(page: 0).done { (res) in
+                if res.status == 200 {
+                    self.datas.removeAll()
+                    self.datas.append(contentsOf: res.messages)
+                    self.tableView.reloadData()
+                }else {
+                    print(res.message!)
+                }
+            }.catch { (error) in
+
+            }.finally {
+                after(seconds: 1).done {
+                    control.endRefreshing()
+                }
+            }
+        }
+    }
+    
+    @objc
+    func didChangerFooterRefreshControl(control: UIRefreshControl) {
+        if(control.isRefreshing) {
+            fetchMessages(page: 0).done { (res) in
+                if res.status == 200 {
+                    self.datas.removeAll()
+                    self.datas.append(contentsOf: res.messages)
+                    self.tableView.reloadData()
+                }else {
+                    print(res.message!)
+                }
+                }.catch { (error) in
+                    
+                }.finally {
+                    after(seconds: 1).done {
+                        control.endRefreshing()
+                    }
+            }
         }
     }
     
