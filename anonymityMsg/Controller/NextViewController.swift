@@ -30,7 +30,7 @@ class NextViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(MesssageCell.self, forCellReuseIdentifier: "cell")
-        tableView.estimatedRowHeight = 10
+        tableView.estimatedRowHeight = 100
         view.addSubview(tableView)
         
         let rightItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapRightItem))
@@ -50,7 +50,6 @@ class NextViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         
         let refreshControl = UIRefreshControl()
-        refreshControl.attributedTitle = NSAttributedString(string: "下拉刷新")
         refreshControl.addTarget(self, action: #selector(didChangerRefreshControl), for: .valueChanged)
         tableView.refreshControl = refreshControl
         
@@ -68,10 +67,12 @@ class NextViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @objc
     func didChangerRefreshControl(control: UIRefreshControl) {
         if(control.isRefreshing) {
+            currentPage = 0
             fetchMessages(page: currentPage).done { (res) in
                 if res.status == 200 {
                     self.datas.removeAll()
                     self.datas.append(contentsOf: res.messages)
+                    self.tableView.refreshFooterControl?.isHidden = false
                     self.tableView.reloadData()
                 }else {
                     print(res.message!)

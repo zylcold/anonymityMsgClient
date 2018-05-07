@@ -10,7 +10,7 @@ import UIKit
 
 class YLRefreshFooterControl: UIControl {
     open var isRefreshing: Bool
-    open var attributedTitle: NSAttributedString?
+    open var autoRefresh: Bool = true
     fileprivate var tipLabel: UILabel?
     fileprivate weak var scrollView: UIScrollView?
     fileprivate var scrollViewInsets: UIEdgeInsets = UIEdgeInsets.zero
@@ -40,13 +40,28 @@ class YLRefreshFooterControl: UIControl {
         self.isRefreshing = false
     }
     
+    override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+        self.scrollView?.removeObserver(self, forKeyPath: "contentSize")
+        self.scrollView?.removeObserver(self, forKeyPath: "contentOffset")
+        self.scrollView?.contentInset.bottom += self.bounds.height
+        
+    }
+    
+    override func willRemoveSubview(_ subview: UIView) {
+        subview.willRemoveSubview(subview)
+        self.scrollView?.removeObserver(self, forKeyPath: "contentSize")
+        self.scrollView?.removeObserver(self, forKeyPath: "contentOffset")
+        self.scrollView?.contentInset.bottom -= self.bounds.height
+    }
+    
     open override func didMoveToSuperview() {
         super.didMoveToSuperview()
         self.scrollView = self.superview as? UIScrollView
         
         if let scroll = self.scrollView {
             scroll.addObserver(self, forKeyPath: "contentSize", options: .initial, context: nil)
-            scroll.addObserver(self, forKeyPath: "contentOffset", options: .initial, context: nil)
+            scroll.addObserver(self, forKeyPath: "contentOffset", options: [.new, .old], context: nil)
         }
         DispatchQueue.main.async {
             [weak self] in
@@ -72,15 +87,35 @@ class YLRefreshFooterControl: UIControl {
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "contentSize" {
+            
             var rect = self.frame
             rect.origin.y = self.scrollView?.contentSize.height ?? 0.0
             self.frame = rect
+            
         }
         
         if keyPath == "contentOffset" {
-            let offsetY = self.scrollView?.contentOffset.y ?? 0.0
-            let contentSizeH = self.scrollView?.contentSize.height ?? 0.0
-            if self.isRefreshing == false && offsetY > 300 && contentSizeH-offsetY < (UIScreen.main.bounds.size.height-(self.scrollView?.adjustedContentInset.top ?? 0.0) + 10) {
+            
+            guard let scroll = self.scrollView else {
+                return
+            }
+            
+            let offsetY = scroll.contentOffset.y
+            let contentSizeH = scroll.contentSize.height
+            
+            guard self.isRefreshing == false && self.isHidden == false else{
+                return
+            }
+            
+            guard offsetY > 300 else {
+                return
+            }
+
+            guard (contentSizeH-offsetY) < (scroll.bounds.height-(scroll.adjustedContentInset.top) + 100 + self.bounds.height) else {
+                return
+            }
+            
+            if self.autoRefresh {
                 self.beginRefreshing()
             }
         }
