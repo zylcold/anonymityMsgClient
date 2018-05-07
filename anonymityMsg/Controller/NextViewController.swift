@@ -26,11 +26,13 @@ class NextViewController: UIViewController, UITableViewDataSource, UITableViewDe
     private let tableView = UITableView(frame: .zero, style: .plain)
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "列表"
         tableView.frame = self.view.bounds
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(MesssageCell.self, forCellReuseIdentifier: "cell")
         tableView.estimatedRowHeight = 100
+        tableView.separatorStyle = .none
         view.addSubview(tableView)
         
         let rightItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapRightItem))
@@ -56,6 +58,10 @@ class NextViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let refreshFooterControl = YLRefreshFooterControl()
         refreshFooterControl.addTarget(self, action: #selector(didChangerFooterRefreshControl) , for: .valueChanged)
         tableView.refreshFooterControl = refreshFooterControl
+        
+        NotificationCenter.default.addObserver(forName: Notification.Name("sendNewMessageNotificationKey"), object: nil, queue: OperationQueue.main) { (notification) in
+//            refreshControl.beginRefreshing()
+        }
     }
     @objc
     func didTapRightItem() {
@@ -121,8 +127,8 @@ class NextViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return UITableViewAutomaticDimension
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        tableView.deselectRow(at: indexPath, animated: true)
+//    }
 }
 

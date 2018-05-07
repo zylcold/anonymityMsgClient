@@ -94,15 +94,17 @@ func postAddNewMessage(_ uid: String, message: String? = nil, images: String? = 
 
 
 func networkUtil<T:Decodable>(request: DataRequest) -> Promise<T> {
-    debugPrint("===============")
-    debugPrint(request)
-    debugPrint("===============")
+    
     let q = DispatchQueue.global()
     return request.responseData().map(on: q, { (arg) -> T in
         let (data, _) = arg
+        debugPrint("===============")
+        debugPrint(request)
+        debugPrint(try JSONSerialization.jsonObject(with: data, options: .allowFragments))
+        debugPrint("===============")
+        
         return try JSONDecoder().decode(T.self, from: data)
     })
 }
-
 
 

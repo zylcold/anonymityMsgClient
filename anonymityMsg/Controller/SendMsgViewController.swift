@@ -20,6 +20,7 @@ class SendMsgViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "发消息"
         self.edgesForExtendedLayout = .bottom
         view.backgroundColor = .white
         let rightItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapRightItem))
@@ -45,7 +46,10 @@ class SendMsgViewController: UIViewController {
     func didTapRightItem() {
         if let message = self.textView?.text {
             postAddNewMessage(uid, message: message).done {_ in
-                print("hell")
+                
+                let sendNotification = Notification(name: Notification.Name("sendNewMessageNotificationKey"), object: nil)
+                NotificationCenter.default.post(sendNotification)
+                
                 let alert = StatusAlert.instantiate(withImage: UIImage(named: "Success_icon"), title: "成功", message: nil)
                 alert.showInKeyWindow()
             }.catch { (error) in

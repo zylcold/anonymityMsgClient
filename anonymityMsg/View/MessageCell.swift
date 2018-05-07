@@ -13,9 +13,9 @@ class MesssageCell: UITableViewCell {
     var message: MessageModel? {
         didSet {
             self.contentLabel?.text = message?.message
-            self.nameLabel?.text = message?.name
+            self.nameLabel?.text = message?.user_name
             self.contentLabel?.flex.markDirty()
-            if(!((message?.name) != nil)) {
+            if(!((message?.user_name) != nil)) {
                 self.nameLabel?.flex.isIncludedInLayout = false
             }else {
                 self.nameLabel?.flex.isIncludedInLayout = true
@@ -25,17 +25,29 @@ class MesssageCell: UITableViewCell {
     }
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        self.selectionStyle = .none
         let contentLabel = UILabel()
         contentLabel.numberOfLines = 0
+        contentLabel.font = UIFont.systemFont(ofSize: 12)
         self.contentView.addSubview(contentLabel)
         
         let nameLabel = UILabel()
+        nameLabel.font = UIFont.italicSystemFont(ofSize: 12)
         self.contentView.addSubview(nameLabel)
-        
-        self.contentView.flex.direction(.column).define { (flex) in
-            flex.addItem(contentLabel).margin(10, 15, 10, 15)
-            flex.addItem(nameLabel).alignSelf(.start).margin(0, 15, 10, 15)
+        let backgroundView = UIView()
+        backgroundView.layer.cornerRadius = 3
+        backgroundView.backgroundColor = UIColor.white
+        backgroundView.layer.shadowColor = UIColor.black.cgColor
+        backgroundView.layer.shadowOpacity = 0.1
+        backgroundView.layer.shadowRadius = 4
+        backgroundView.layer.shadowOffset = CGSize(width: 3, height: 3)
+        self.contentView.addSubview(backgroundView)
+        self.contentView.flex.padding(UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)).define { (flex) in
+            flex.addItem(backgroundView).define({ (flex) in
+                flex.addItem(contentLabel).margin(10, 15, 10, 15)
+                flex.addItem(nameLabel).alignSelf(.start).margin(0, 15, 10, 15)
+            })
+            
         }
         
         self.contentLabel = contentLabel

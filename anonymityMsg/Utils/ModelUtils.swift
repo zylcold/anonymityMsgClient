@@ -12,7 +12,7 @@ struct MessageModel: Decodable {
     var images: String?
     var video: String?
     var audio: String?
-    var name: String?
+    var user_name: String?
 }
 
 struct PageInfoModel: Decodable {
