@@ -9,9 +9,11 @@
 import UIKit
 import KeychainAccess
 import URLNavigator
+import PromiseKit
 class NextViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private let navigator: NavigatorType
     private var datas = [MessageModel]()
+    private var currentPage = 0
     init(navigator: NavigatorType) {
         self.navigator = navigator
         super.init(nibName: nil, bundle: nil)
@@ -47,11 +49,62 @@ class NextViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 
         }
         
+        let refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "下拉刷新")
+        refreshControl.addTarget(self, action: #selector(didChangerRefreshControl), for: .valueChanged)
+        tableView.refreshControl = refreshControl
+        
+        let refreshFooterControl = YLRefreshFooterControl()
+        refreshFooterControl.addTarget(self, action: #selector(didChangerFooterRefreshControl) , for: .valueChanged)
+        tableView.refreshFooterControl = refreshFooterControl
     }
     @objc
     func didTapRightItem() {
         if let uid = Keychain(service: "com.Zhu.anonymityMsg")["uid"] {
             navigator.present("anMsg://sendMsg/\(uid)", wrap: UINavigationController.self)
+        }
+    }
+    
+    @objc
+    func didChangerRefreshControl(control: UIRefreshControl) {
+        if(control.isRefreshing) {
+            fetchMessages(page: currentPage).done { (res) in
+                if res.status == 200 {
+                    self.datas.removeAll()
+                    self.datas.append(contentsOf: res.messages)
+                    self.tableView.reloadData()
+                }else {
+                    print(res.message!)
+                }
+            }.catch { (error) in
+
+            }.finally {
+                after(seconds: 1).done {
+                    control.endRefreshing()
+                }
+            }
+        }
+    }
+    
+    @objc
+    func didChangerFooterRefreshControl(control: YLRefreshFooterControl) {
+        if(control.isRefreshing) {
+            self.currentPage += 1
+            fetchMessages(page: self.currentPage).done { (res) in
+                if res.status == 200 {
+                    if res.messages.count < 20 {
+                        control.isHidden = true
+                    }
+                    self.datas.append(contentsOf: res.messages)
+                    self.tableView.reloadData()
+                }else {
+                    print(res.message!)
+                }
+            }.catch { (error) in
+                    
+            }.finally {
+                control.endRefreshing()
+            }
         }
     }
     
